@@ -10,6 +10,10 @@ public class Merchant {
     private String address;
     //商家菜品
     private Dishes[] dishes;
+    //
+    private double lon;
+    //
+    private double lat;
 
     public String getName() {
         return name;
@@ -33,5 +37,21 @@ public class Merchant {
 
     public void setDishes(Dishes[] dishes) {
         this.dishes = dishes;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 }
