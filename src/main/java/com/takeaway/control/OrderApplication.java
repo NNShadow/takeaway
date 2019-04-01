@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class OrderApplication {
-    private static Order order;
     public static void main(String[] args) {
         OrderDishes[] orderDishes = new OrderDishes[2];
 
@@ -33,12 +32,12 @@ public class OrderApplication {
         orderDishes1.setCount(1);
 
         OrderService orderService = new OrderService();
-        order = null;
+        Order order = null;
         try{
             order = orderService.createOrder(orderDishes);
         }catch (NoAddressException e){
             System.out.println("请输入收货地址！");
-            initAddress(orderService,order);
+            initAddress(orderService);
             //再调用一次
             try{
                 order = orderService.createOrder(orderDishes);
@@ -52,8 +51,7 @@ public class OrderApplication {
         orderService.payOrder(order);
     }
 
-    //此处进行过修改，but有错...
-    public static void initAddress(OrderService orderService, Order order){
+    public static void initAddress(OrderService orderService){
         String str = null;
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -61,9 +59,7 @@ public class OrderApplication {
         }catch (IOException e){
 
         }
-
-        //此处进行过修改，but有错...
-        order.setAddress(str);
+        orderService.setAddress(str);
 
     }
 }

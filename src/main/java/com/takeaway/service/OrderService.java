@@ -10,13 +10,13 @@ import java.io.InputStreamReader;
 
 public class OrderService {
 
+    private String address;
+
     public Order createOrder(OrderDishes[] orderDishes) throws NoAddressException {
-        //此处进行过修改，but有错...
-        Order order = new Order();
-        if(order.getAddress() == null){
+        if(address == null){
             throw new NoAddressException();
         }
-
+        Order order = new Order();
         double totalAmount = 0d;
         for(OrderDishes orderDish : orderDishes){
             double amount = orderDish.getDishes().getPrice()*orderDish.getCount();
@@ -29,7 +29,7 @@ public class OrderService {
 
     //收据
     public void confirmOrder(Order order){
-        System.out.println("本次下单的收货地址是："+order.getAddress());
+        System.out.println("本次下单的收货地址是："+address);
         System.out.println("-------");
         System.out.println("本次下单的商品信息是：");
         System.out.println("-------");
@@ -66,4 +66,11 @@ public class OrderService {
 
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
