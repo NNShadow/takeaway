@@ -1,7 +1,7 @@
 package com.takeaway.model;
 
 /*
-商家
+商家，设计商家模型
  */
 public class Merchant {
     //商家名称
@@ -10,10 +10,14 @@ public class Merchant {
     private String address;
     //商家菜品
     private Dishes[] dishes;
-    //
+    //经度
     private double lon;
-    //
+    //纬度
     private double lat;
+    //距离
+    private double distance;
+
+    private String id;
 
     public String getName() {
         return name;
@@ -53,5 +57,21 @@ public class Merchant {
 
     public void setLat(double lat) {
         this.lat = lat;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
