@@ -1,25 +1,81 @@
 package com.takeaway;
 
 import com.takeaway.model.Merchant;
+import com.takeaway.model.MerchantSearchParam;
 import com.takeaway.service.MerchantService;
 import com.takeaway.service.impl.MerchantServiceImpl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 //上传商家数据
 public class Application {
 
+    // 指令编写，与上一课不同
     public static MerchantService merchantService = new MerchantServiceImpl();
     public static void main(String[] args) {
-        init();
+        merchantService.init();
         //宿舍
-        List<Merchant> merchantList = merchantService.search(117.138817, 34.210431);
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        while (true){
+            String command = null;
+            try{
+                command = bufferedReader.readLine();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            System.out.println("执行命令：" + command);
+
+            // startsWith()，字面意思，从字符串0位开始，看是否相等，返回true or false
+            if(command.startsWith("add ")){
+                String content = command.replaceAll("add ", "");
+                // replace(CharSequence target, CharSequence replacement)，用replacement替换所有的target，两个参数都是字符串。
+                // replaceAll(String regex, String replacement)，用replacement替换所有的regex匹配项，regex很明显是个正则表达式，replacement是字符串。
+                // replaceFirst(String regex, String replacement)，基本和replaceAll相同，区别是只替换第一个匹配项。
+                initMerchant(content.split(" "));
+            }
+            if(command.startsWith("search ")){
+                String content = command.replaceAll("search ", "");
+                // replace(CharSequence target, CharSequence replacement)，用replacement替换所有的target，两个参数都是字符串。
+                // replaceAll(String regex, String replacement)，用replacement替换所有的regex匹配项，regex很明显是个正则表达式，replacement是字符串。
+                // replaceFirst(String regex, String replacement)，基本和replaceAll相同，区别是只替换第一个匹配项。
+                search(content);
+            }
+        }
+        // 执行数据添加，期望的数据格式是：add 商户ID 商户名称 经度 纬度
+        // 执行数据查询，期望的数据格式是：search 商户名称【可选】
+
+
+    }
+
+    private static void search(String name){
+        MerchantSearchParam param = new MerchantSearchParam();
+        param.setName(name);
+        param.setLon(117.138817);
+        param.setLat(34.210431);
+        List<Merchant> merchantList = merchantService.search(param);
         for(Merchant merchant : merchantList){
             System.out.println("商家名称：" + merchant.getName());
-            Double distance = merchant.getDistance();
-            System.out.println("距离：" + distance.intValue() + "m");
+            System.out.println("距离：" + merchant.getDistance());
             System.out.println("-----------------");
+//            System.out.println("商家名称：" + merchant.getName());
+//            Double distance = merchant.getDistance();
+//            System.out.println("距离：" + distance.intValue() + "m");
+//            System.out.println("-----------------");
         }
+    }
+
+    private static void initMerchant(String[] items){
+        Merchant merchant = new Merchant();
+        merchant.setId(items[0]);
+        merchant.setName(items[1]);
+        merchant.setLon(Double.valueOf(items[2]));
+        merchant.setLat(Double.valueOf(items[3]));
+
+        merchantService.add(merchant);
     }
 
     private static void init() {
